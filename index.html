@@ -60,23 +60,29 @@ header .date{color:var(--soft);font-size:24px;font-weight:600;white-space:nowrap
 
 .left{display:grid;grid-template-rows:minmax(0,1fr) 300px;gap:20px;min-height:0}
 .lower{display:grid;grid-template-columns:400px minmax(0,1fr);gap:20px;min-height:0}
-.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:20px 28px;min-width:0;min-height:0}
-.label{font-size:20px;font-weight:600;color:var(--soft);letter-spacing:.08em;margin:0}
+.card{position:relative;overflow:hidden;background:var(--card);border:2px solid var(--line);border-radius:28px;padding:20px 28px;min-width:0;min-height:0}
+/* per-card font size control */
+.fsctl{position:absolute;top:12px;right:14px;z-index:3;display:flex;align-items:center;gap:2px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:2px;opacity:.55;transition:opacity .2s}
+.fsctl:hover,.fsctl:focus-within{opacity:1}
+.fsctl button{border:none;background:none;border-radius:999px;width:34px;height:30px;font-size:20px;font-weight:700;line-height:1;color:var(--soft);padding:0}
+.fsctl button:hover{background:var(--ground);color:var(--ink)}
+.fsctl .fsr{width:auto;padding:0 8px;font-size:15px;font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.label{font-size:calc(20px*var(--fs,1));font-weight:600;color:var(--soft);letter-spacing:.08em;margin:0}
 
 .top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:stretch}
 .clockbox{display:flex;flex-direction:column;justify-content:center}
-.clock{font-family:var(--f-num);font-weight:600;font-size:136px;line-height:1;font-variant-numeric:tabular-nums}
-.clock .sec{font-size:52px;color:var(--soft);margin-left:6px}
+.clock{font-family:var(--f-num);font-weight:600;font-size:calc(136px*var(--fs,1));line-height:1;font-variant-numeric:tabular-nums}
+.clock .sec{font-size:calc(52px*var(--fs,1));color:var(--soft);margin-left:6px}
 .now{border-radius:22px;background:var(--ground);padding:22px 26px;display:flex;flex-direction:column;justify-content:center;gap:12px;min-width:0}
 .now-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.now-subj{font-size:68px;font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.now-time{color:var(--soft);font-family:var(--f-num);font-size:24px}
+.now-subj{font-size:calc(68px*var(--fs,1));font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-time{color:var(--soft);font-family:var(--f-num);font-size:calc(24px*var(--fs,1))}
 .remain{display:flex;align-items:baseline;gap:12px}
-.remain-num{font-family:var(--f-num);font-weight:700;font-size:96px;line-height:1;font-variant-numeric:tabular-nums;color:var(--grass-deep)}
-.remain-cap{font-size:28px;color:var(--soft);font-weight:600}
+.remain-num{font-family:var(--f-num);font-weight:700;font-size:calc(96px*var(--fs,1));line-height:1;font-variant-numeric:tabular-nums;color:var(--grass-deep)}
+.remain-cap{font-size:calc(28px*var(--fs,1));color:var(--soft);font-weight:600}
 .now.warn .remain-num{color:var(--warn)}
 .now.warn .vine-fill{background:var(--warn)}
-.pill{display:inline-block;border-radius:999px;padding:3px 16px;font-size:20px;font-weight:600;background:var(--grass);color:var(--card)}
+.pill{display:inline-block;border-radius:999px;padding:3px 16px;font-size:calc(20px*var(--fs,1));font-weight:600;background:var(--grass);color:var(--card)}
 .now.warn .pill{background:var(--warn)}
 .now.rest .pill{background:var(--sun);color:#3b2f07}
 
@@ -87,29 +93,31 @@ header .date{color:var(--soft);font-size:24px;font-weight:600;white-space:nowrap
 @media (prefers-reduced-motion:reduce){.vine-fill,.vine-bud{transition:none}}
 
 .right{display:flex;flex-direction:column;gap:12px}
-.sched{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;justify-content:space-evenly}
-.sched li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:16px;padding:8px 14px;border-radius:18px;border:2px solid transparent}
-.dot{width:52px;height:52px}
-.s-name{font-size:58px;font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.s-time{font-family:var(--f-num);font-size:24px;color:var(--soft);font-variant-numeric:tabular-nums}
-.s-tag{font-size:20px;font-weight:600;color:var(--soft);white-space:nowrap}
+.sched{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;justify-content:space-evenly;overflow-y:auto;scrollbar-width:none}
+.sched::-webkit-scrollbar{display:none}
+.sched.over{justify-content:flex-start}
+.sched li{display:grid;grid-template-columns:calc(52px*var(--fs,1)) minmax(0,1fr) auto;align-items:center;gap:16px;padding:8px 14px;border-radius:18px;border:2px solid transparent}
+.dot{width:calc(52px*var(--fs,1));height:calc(52px*var(--fs,1))}
+.s-name{font-size:calc(58px*var(--fs,1));font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-time{font-family:var(--f-num);font-size:calc(24px*var(--fs,1));color:var(--soft);font-variant-numeric:tabular-nums}
+.s-tag{font-size:calc(20px*var(--fs,1));font-weight:600;color:var(--soft);white-space:nowrap}
 .sched li.cur{border-color:var(--grass);background:var(--ground)}
 .sched li.cur .s-tag{color:var(--grass-deep)}
 .sched li.done .s-name,.sched li.done .s-time{color:var(--done)}
 .sched li.done .s-name{text-decoration:line-through;text-decoration-thickness:3px}
 .sched li.brk{padding-block:2px}
-.sched li.brk .dot{width:30px;height:30px;justify-self:center}
-.sched li.brk .s-name{font-size:22px;font-weight:600;color:var(--soft)}
+.sched li.brk .dot{width:calc(30px*var(--fs,1));height:calc(30px*var(--fs,1));justify-self:center}
+.sched li.brk .s-name{font-size:calc(22px*var(--fs,1));font-weight:600;color:var(--soft)}
 
 .att{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
 .att-box{display:grid;gap:6px;justify-items:center;text-align:center}
-.att-num{font-family:var(--f-num);font-weight:700;font-size:78px;line-height:1;font-variant-numeric:tabular-nums}
+.att-num{font-family:var(--f-num);font-weight:700;font-size:calc(78px*var(--fs,1));line-height:1;font-variant-numeric:tabular-nums}
 .att-box.absent .att-num{color:var(--petal-red)}
 .att-box.absent.zero .att-num{color:var(--grass-deep)}
-.step{display:flex;gap:8px;height:38px}
-.step button{width:38px;height:38px;border-radius:50%;border:2px solid var(--line);background:var(--bg);font-weight:700;font-size:20px;line-height:1}
+.step{display:flex;gap:8px;height:calc(38px*var(--fs,1))}
+.step button{width:calc(38px*var(--fs,1));height:calc(38px*var(--fs,1));border-radius:50%;border:2px solid var(--line);background:var(--bg);font-weight:700;font-size:calc(20px*var(--fs,1));line-height:1}
 .step button:hover{border-color:var(--grass)}
-.att-note{margin:14px 0 0;color:var(--soft);font-size:22px;text-align:center}
+.att-note{margin:14px 0 0;color:var(--soft);font-size:calc(22px*var(--fs,1));text-align:center}
 
 .notecard{display:flex;flex-direction:column;gap:10px}
 .note-head{display:flex;align-items:center;gap:10px}
@@ -167,7 +175,7 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
   </header>
 
   <div class="left">
-    <div class="card top">
+    <div class="card top" data-card="top"><div class="fsctl" role="group" aria-label="調整字體大小"><button type="button" data-fs="top" data-d="-1" aria-label="字變小" title="字變小">−</button><button type="button" class="fsr" data-fs="top" data-d="0" title="恢復原本大小">100%</button><button type="button" data-fs="top" data-d="1" aria-label="字變大" title="字變大">＋</button></div>
       <div class="clockbox">
         <p class="label t" data-t="現在時間"></p>
         <div class="clock" id="clock">--:--<span class="sec">--</span></div>
@@ -185,7 +193,7 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
     </div>
 
     <div class="lower">
-      <div class="card">
+      <div class="card" data-card="att"><div class="fsctl" role="group" aria-label="調整字體大小"><button type="button" data-fs="att" data-d="-1" aria-label="字變小" title="字變小">−</button><button type="button" class="fsr" data-fs="att" data-d="0" title="恢復原本大小">100%</button><button type="button" data-fs="att" data-d="1" aria-label="字變大" title="字變大">＋</button></div>
         <p class="label t" data-t="出席人數"></p>
         <div class="att">
           <div class="att-box"><span class="label t" data-t="應到"></span><span class="att-num" id="should">0</span>
@@ -197,11 +205,11 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
         <p class="att-note" id="attNote"></p>
       </div>
 
-      <div class="card notecard">
+      <div class="card notecard" data-card="note"><div class="fsctl" role="group" aria-label="調整字體大小"><button type="button" data-fs="note" data-d="-1" aria-label="字變小" title="字變小">−</button><button type="button" class="fsr" data-fs="note" data-d="0" title="恢復原本大小">100%</button><button type="button" data-fs="note" data-d="1" aria-label="字變大" title="字變大">＋</button></div>
         <div class="note-head">
           <svg viewBox="0 0 30 30" aria-hidden="true"><g fill="var(--sun)"><circle cx="15" cy="7" r="5"/><circle cx="23" cy="13" r="5"/><circle cx="20" cy="22" r="5"/><circle cx="10" cy="22" r="5"/><circle cx="7" cy="13" r="5"/></g><circle cx="15" cy="15" r="4.5" fill="var(--petal-red)"/></svg>
           <label class="label t" for="note" data-t="老師留言"></label>
-          <span class="hint" style="margin-left:auto">點一下就可以修改</span>
+          <span class="hint">點一下就可以修改</span>
         </div>
         <textarea class="note" id="note"></textarea>
         <div class="note-view" id="noteView" tabindex="0" role="button" aria-label="修改老師留言" hidden></div>
@@ -209,7 +217,7 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
     </div>
   </div>
 
-  <div class="card right">
+  <div class="card right" data-card="sched"><div class="fsctl" role="group" aria-label="調整字體大小"><button type="button" data-fs="sched" data-d="-1" aria-label="字變小" title="字變小">−</button><button type="button" class="fsr" data-fs="sched" data-d="0" title="恢復原本大小">100%</button><button type="button" data-fs="sched" data-d="1" aria-label="字變大" title="字變大">＋</button></div>
     <p class="label t" data-t="今日考程"></p>
     <ul class="sched" id="sched"></ul>
   </div>
@@ -270,6 +278,7 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
   try{st=JSON.parse(localStorage.getItem(KEY))}catch(e){st=null}
   if(!st||!Array.isArray(st.rows))st=JSON.parse(JSON.stringify(SAMPLE));
   for(const k of ['zy','sound','fix'])if(st[k]===undefined)st[k]=SAMPLE[k];
+  if(!st.fs||typeof st.fs!=='object')st.fs={};
   const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
   const $=id=>document.getElementById(id);
   const pad=n=>String(n).padStart(2,'0');
@@ -411,6 +420,15 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
       const icon=brk?seed():flower(COLORS[(ci++)%COLORS.length]);
       return `<li class="${cls}">${icon}<div style="min-width:0"><div class="s-name">${T(r.n)}</div>${brk?'':`<div class="s-time">${r.s} – ${r.e}</div>`}</div><span class="s-tag">${T(tag)}</span></li>`;
     }).join('');
+    fitSched();
+  }
+  function fitSched(){
+    const ul=$('sched');ul.classList.remove('over');
+    if(ul.scrollHeight>ul.clientHeight+1){
+      ul.classList.add('over');
+      const cur=ul.querySelector('li.cur')||[...ul.querySelectorAll('li')].find(li=>!li.classList.contains('done'));
+      if(cur)ul.scrollTop=Math.max(0,cur.offsetTop-ul.offsetTop-ul.clientHeight/2+cur.offsetHeight/2);
+    }
   }
 
   function renderNow(now){
@@ -499,6 +517,22 @@ textarea.inp{min-height:120px;resize:vertical;font-size:1rem;line-height:1.6}
   $('fsBtn').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){}};
   async function wake(){try{if(navigator.wakeLock)await navigator.wakeLock.request('screen')}catch(e){}}
   wake();document.addEventListener('visibilitychange',()=>{if(!document.hidden)wake()});
+
+  /* ---------- per-card font size ---------- */
+  function applyFs(){
+    document.querySelectorAll('[data-card]').forEach(c=>{
+      const k=c.dataset.card,v=st.fs[k]||1;
+      c.style.setProperty('--fs',v);
+      c.querySelector('.fsr').textContent=Math.round(v*100)+'%';
+    });
+  }
+  document.querySelectorAll('.fsctl button').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.fs,d=Number(b.dataset.d);
+    let v=st.fs[k]||1;
+    v=d===0?1:Math.round(Math.min(2,Math.max(0.5,v+d*0.1))*10)/10;
+    st.fs[k]=v;save();applyFs();if(k==='sched')fitSched();
+  }));
+  applyFs();
 
   parseFix();fit();renderStatic();tick(true);setInterval(tick,1000);
 })();
